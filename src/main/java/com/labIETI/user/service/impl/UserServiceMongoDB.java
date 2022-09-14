@@ -41,9 +41,13 @@ public class UserServiceMongoDB implements UserService {
     @Override
     public User update(User user, Long id) {
         if(userRepository.existsById(id)){
-            userRepository.deleteById(id);
-            userRepository.save(user);
+            userRepository.findById(id).get().update(user);
         }
         return user;
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 }

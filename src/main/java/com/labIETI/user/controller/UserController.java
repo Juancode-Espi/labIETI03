@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -39,11 +40,13 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<UserDto> create( @RequestBody UserDto userDto){
-        return new ResponseEntity<>(userMapper.toDto(userService
-                .create(userMapper.toEntity(userDto))),HttpStatus.CREATED);
+        UserDto userResponse = userMapper.toDto(userService.create(userMapper.toEntity(userDto)));
+        userResponse.setPassword(userDto.getPassword());
+        return new ResponseEntity<>(userResponse,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
+    @RolesAllowed("ADMIN")
     public ResponseEntity<Boolean> delete( @PathVariable Long id){
         try {
             userService.deleteById(id);

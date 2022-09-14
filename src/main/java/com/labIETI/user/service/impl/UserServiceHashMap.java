@@ -52,4 +52,9 @@ public class UserServiceHashMap implements UserService {
             throw new UserNotFoundException();
         }
     }
+
+    @Override
+    public User findByEmail(String email) {
+        return null;
+    }
 }
